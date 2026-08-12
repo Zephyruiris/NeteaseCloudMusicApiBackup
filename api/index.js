@@ -15,6 +15,17 @@ async function getApp() {
 }
 
 module.exports = async (req, res) => {
-  const app = await getApp()
-  return app(req, res)
+  try {
+    const app = await getApp()
+    return app(req, res)
+  } catch (error) {
+    console.error('NCM API ERROR:', error)
+
+    res.status(500).json({
+      error: true,
+      message: error.message,
+      code: error.code,
+      stack: error.stack
+    })
+  }
 }
